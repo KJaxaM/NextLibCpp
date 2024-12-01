@@ -179,7 +179,8 @@ display.sendCommand("page 1");
 ### Some loose structure, and especially this readme file is inspired of [Emre Dur](https://github.com/EmreDUR) library.
 
 
-#### Notes
+### Notes:
+#### C++ project in STM32 CubeIDE
 1.  Choose `C++` as targeted language when you create new project.
 2.  In Project Manager/Code Generator check `Generate peripheral initialization as a pair of '.c/.h' files per peripheral`. This gives you better structure, but more important, all changes in these files need only re-compilation not editing.
 3.  Rename your `main.c` file to `main.cpp` and you have a cpp project.
