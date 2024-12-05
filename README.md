@@ -185,3 +185,5 @@ display.sendCommand("page 1");
 2.  In Project Manager/Code Generator check `Generate peripheral initialization as a pair of '.c/.h' files per peripheral`. This gives you better structure, but more important, all changes in these files need only re-compilation not editing.
 3.  Rename your `main.c` file to `main.cpp` and you have a cpp project.
 4.  If you have to change .ioc file and re-generate the code, you should delete new main.c file (if you change clock configuration or add some new features – copy clock settings or new features initialization from main.c before deletion).
+
+<kris@jaxasoft.se>
