@@ -66,6 +66,8 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
 
 You can also declare and define a callback function(s) for any Nextion components you want. 
 
+But remember, you have not to use methods ***getVal(.)*** or ***getText(.)*** in body of the callback.
+
 ```cpp
 void buttonCallback()
     {
