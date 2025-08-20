@@ -179,7 +179,7 @@ Example Usage:
 ```cpp
 int pid;
 bool res;
-res = NComp::getPageId(pid);`
+res = NComp::getPageId(pid);
 if (res)
    {
    // use pid ...
