@@ -5,7 +5,7 @@
  *  Created on: Nov 18, 2024
  *      Author: Kris Jaxa
  *            @ Jaxasoft, Freeware
- *              v.1.0.0
+ *              v.1.0.1
  */
 
 #include "NDisplay.h"
@@ -15,6 +15,12 @@ const int NDisplay::NEX_RET_EVENT_TOUCH_HEAD {0x65};
 const int NDisplay::NEX_RET_STRING_HEAD {0x70};
 const int NDisplay::NEX_RET_NUMBER_HEAD {0x71};
 const int NDisplay::NEX_RET_EVENT_WAKED {0x87};
+const int NDisplay::NEX_RET_CURRENT_PAGE_ID_HEAD {0x66}; // +25-08-09
+
+bool NDisplay::dataIn {false};
+UART_HandleTypeDef* NDisplay::p_uartHandle;
+int32_t NDisplay::NextNumBuff;
+
 /*! \brief Support touch event, string data and numeric data
  *  </summary>
  *
@@ -60,6 +66,7 @@ HAL_StatusTypeDef NDisplay::init(UART_HandleTypeDef *_uartHandle,
     eventHandl[NEX_RET_STRING_HEAD] = &NDisplay::stringHeadHandl;
     eventHandl[NEX_RET_NUMBER_HEAD] = &NDisplay::numberHeadHandl;
     eventHandl[NEX_RET_EVENT_WAKED] = &NDisplay::eventWakedHandl;
+    eventHandl[NEX_RET_CURRENT_PAGE_ID_HEAD] = &NDisplay::currentPageHandl;
 
     //Start UART transaction using Idle and DMA
     return waitRxEvent();
@@ -93,7 +100,7 @@ void NDisplay::setVal(PnO_Id key, int iOut)
     sendCommand(TxData);
     }
 
-void NDisplay::sendCommand(const std::string &_command) const
+void NDisplay::sendCommand(const std::string &_command)
     {
     static uint8_t END_MSG[3] {0xff, 0xff, 0xff};
     HAL_UART_Transmit(p_uartHandle, (uint8_t*) _command.c_str(), _command.size(),
@@ -105,6 +112,11 @@ void NDisplay::getVal(PnO_Id key)
     {
     sprintf(TxData, "get %s.val", dObjects[key].objname.c_str());
     sendCommand(TxData);
+    }
+
+void NDisplay::getPageId()
+    {
+    sendCommand("sendme");
     }
 
 void NDisplay::setText(PnO_Id key, const std::string &txtOut)
@@ -168,6 +180,18 @@ void NDisplay::numberHeadHandl()
         dataIn = true;
         }
     }
+
+// 0x66 0xP 0xFF 0xFF 0xFF
+// Returned when get command to return a number, 4 byte 32-bit value
+void NDisplay::currentPageHandl()
+    {
+    if (NextTextLen == 2)
+        {
+        NextNumBuff = RxData[1];
+        dataIn = true;
+        }
+    }
+
 // not implemented
 void NDisplay::eventWakedHandl()
     {

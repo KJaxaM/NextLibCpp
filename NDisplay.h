@@ -5,7 +5,7 @@
  *  Created on: Nov 18, 2024
  *      Author: Kris Jaxa
  *            @ Jaxasoft, Freeware
- *              v.1.0.0
+ *              v.1.0.1
  *
  ***********************************************************************
  *  Some Nextion commands:
@@ -104,13 +104,13 @@ public:
      *
      * \param _command string with command
      */
-    void sendCommand(const std::string &_command) const;
+    static void sendCommand(const std::string &_command);
 
 private:
     /*! Because data from Nextion reads asynchronous, it needs some signal talking that
      * data is read
      */
-    bool dataIn {false};
+    static bool dataIn;
 
 // don't change, there are Nextion's constants which we use in sending commands and
 // parsing of responses from Nextion
@@ -129,7 +129,7 @@ private:
   static const int NEX_RET_INVALID_OPERATION          {0x1B};
   static const int NEX_RET_EVENT_TOUCH_HEAD;
   static const int NEX_RET_EVENT_POSITION_HEAD        {0x67};
-  static const int NEX_RET_CURRENT_PAGE_ID_HEAD       {0x66};
+  static const int NEX_RET_CURRENT_PAGE_ID_HEAD;
   static const int NEX_RET_EVENT_SLEEP_POSITION_HEAD  {0x68};
   static const int NEX_RET_STRING_HEAD;
   static const int NEX_RET_NUMBER_HEAD;
@@ -139,7 +139,7 @@ private:
 //@forma:on
 
 // wait for the result message from Nextion
-    const uint32_t NEXTION_TIMEOUT {150};
+    static const uint32_t NEXTION_TIMEOUT {150};
 
     static const int BUFF_SIZE {96};
 
@@ -151,9 +151,9 @@ private:
     uint32_t NextTextLen;
 
     std::string NextTxtBuff;
-    int32_t NextNumBuff;
+    static int32_t NextNumBuff;
 
-    UART_HandleTypeDef *p_uartHandle;
+    static UART_HandleTypeDef *p_uartHandle;
     DMA_HandleTypeDef *p_dmaHandle;
 
     std::map<std::pair<uint8_t, uint8_t>, NObject> dObjects;
@@ -164,11 +164,14 @@ private:
     void stringHeadHandl();
     void numberHeadHandl();
     void eventWakedHandl();
+    void currentPageHandl();
 
     void setVal(PnO_Id key, int iOut);
     void getVal(PnO_Id key);
     void setText(PnO_Id key, const std::string &txtOut);
     void getText(PnO_Id key);
+    static void getPageId();
+
     };
 
 #endif /* NDISPLAY_H_ */

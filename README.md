@@ -174,7 +174,21 @@ display.sendCommand("page 1");
 
 ```
 
-**Note**: components functions are define for user convenience, all commands could be executed via `sendCommand`, it applies as well to other properties such colors etc.
+### bool  getPageId( int& pId);
+Example Usage:
+```cpp
+int pid;
+bool res;
+res = NComp::getPageId(pid);`
+if (res)
+   {
+   // use pid ...
+   }
+```
+
+**Note**: components functions are define for user convenience, all "set" commands could be executed via` `sendCommand`, it applies as well to other properties such colors etc.
+
+
 
 ### Buffers (Rx and Tx) have size of 96 bytes.
 

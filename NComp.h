@@ -5,8 +5,8 @@
  *  Created on: Nov 19, 2024
  *      Author: Kris Jaxa
  *            @ Jaxasoft, Freeware
- *              v.1.0.0
- *	
+ *              v.1.0.1
+ *
  */
 
 #ifndef NCOMP_H_
@@ -32,6 +32,8 @@ public:
     bool getVal(int &iOut) const;
     void setText(const std::string &txtIn) const;
     bool getText(std::string &txtOut) const;
+
+    static bool getPageId(int &iOut);
 
 private:
     NComp(PnO_Id _key, NDisplay &_display) :
